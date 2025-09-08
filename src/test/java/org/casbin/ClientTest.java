@@ -332,4 +332,10 @@ public class ClientTest {
         assertEquals(Client.run(new String[]{"enforceEx", "-m", "examples/keymatch5_model.conf", "-p", "examples/keymatch5_policy.csv", "alice", "/alice_data/hello/123", "GET"}), "{\"allow\":true,\"explain\":[\"alice\",\"/alice_data/{resource}/.*\",\"GET\"]}");
         assertEquals(Client.run(new String[]{"enforceEx", "-m", "examples/keymatch5_model.conf", "-p", "examples/keymatch5_policy.csv", "alice", "/alice_data/hello/123", "POST"}), "{\"allow\":false,\"explain\":[]}");
     }
+
+    @Test
+    public void testStringVsIntegerParameter() {
+        assertEquals(Client.run(new String[]{"enforceEx", "-m", "examples/string_vs_integer_model.conf", "-p", "examples/string_vs_integer_policy.csv", "alice", "data", "read", "\"1\""}), "{\"allow\":true,\"explain\":[\"reader\",\"data\",\"read\",\"1\"]}");
+        assertEquals(Client.run(new String[]{"enforceEx", "-m", "examples/string_vs_integer_model.conf", "-p", "examples/string_vs_integer_policy.csv", "alice", "data", "read", "1"}), "{\"allow\":false,\"explain\":[]}");
+    }
 }

@@ -156,33 +156,28 @@ public class CommandExecutor {
         return mapper.writeValueAsString(responseBody);
     }
 
-    /**
-     * @param value 
-     * @return 
-     */
     private Object smartConvertValue(String value) {
-        if (value == null || value.trim().isEmpty()) {
-            return value;
+        value = value.trim();
+    
+        if (value.startsWith("\"") && value.endsWith("\"")) {
+            return value.substring(1, value.length() - 1);  // 去掉引号
         }
-        
-        String trimmed = value.trim();
-        
-        try {
-            return Integer.valueOf(trimmed);
-        } catch (NumberFormatException e) {
+    
+        if (value.matches("-?\\d+")) { 
+            return Integer.valueOf(value);  // Integer
         }
-        
-        if ("true".equalsIgnoreCase(trimmed)) {
+    
+        if (value.matches("-?\\d*\\.\\d+")) { 
+            return Double.valueOf(value);  
+        }
+    
+        if ("true".equalsIgnoreCase(value)) {
             return Boolean.TRUE;
-        } else if ("false".equalsIgnoreCase(trimmed)) {
+        } else if ("false".equalsIgnoreCase(value)) {
             return Boolean.FALSE;
         }
-        
-        try {
-            return Double.valueOf(trimmed);
-        } catch (NumberFormatException e) {
-        }
-        
-        return value;
+    
+        return value; 
     }
+    
 }
