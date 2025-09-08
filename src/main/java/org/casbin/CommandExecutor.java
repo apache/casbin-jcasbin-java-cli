@@ -83,7 +83,14 @@ public class CommandExecutor {
                             convertedParams[i] = Integer.valueOf(inputVal[i]);
                         } else if(genericParameterTypes[i] == String.class) {
                             convertedParams[i] = inputVal[i];
-                        } else if(genericParameterTypes[i] == Object[].class || genericParameterTypes[i] == String[].class) {
+                        } else if(genericParameterTypes[i] == Object[].class) {
+                            String[] remainingArgs = Arrays.copyOfRange(inputVal, i, inputVal.length);
+                            Object[] convertedArray = new Object[remainingArgs.length];
+                            for (int j = 0; j < remainingArgs.length; j++) {
+                                convertedArray[j] = smartConvertValue(remainingArgs[j]);
+                            }
+                            convertedParams[i] = convertedArray;
+                        } else if(genericParameterTypes[i] == String[].class) {
                             convertedParams[i] = Arrays.copyOfRange(inputVal, i, inputVal.length);
                         } else if (genericParameterTypes[i] == String[][].class) {
                             String[] arr = Arrays.copyOfRange(inputVal, i, inputVal.length);
@@ -147,5 +154,35 @@ public class CommandExecutor {
         }
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(responseBody);
+    }
+
+    /**
+     * @param value 
+     * @return 
+     */
+    private Object smartConvertValue(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return value;
+        }
+        
+        String trimmed = value.trim();
+        
+        try {
+            return Integer.valueOf(trimmed);
+        } catch (NumberFormatException e) {
+        }
+        
+        if ("true".equalsIgnoreCase(trimmed)) {
+            return Boolean.TRUE;
+        } else if ("false".equalsIgnoreCase(trimmed)) {
+            return Boolean.FALSE;
+        }
+        
+        try {
+            return Double.valueOf(trimmed);
+        } catch (NumberFormatException e) {
+        }
+        
+        return value;
     }
 }
