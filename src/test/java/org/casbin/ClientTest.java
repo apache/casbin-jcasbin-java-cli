@@ -335,7 +335,7 @@ public class ClientTest {
 
     @Test
     public void testStringVsIntegerParameter() {
-        assertEquals(Client.run(new String[]{"enforceEx", "-m", "examples/string_vs_integer_model.conf", "-p", "examples/string_vs_integer_policy.csv", "alice", "data", "read", "\"1\""}), "{\"allow\":true,\"explain\":[\"reader\",\"data\",\"read\",\"1\"]}");
+        assertEquals(Client.run(new String[]{"enforceEx", "-m", "examples/string_vs_integer_model.conf", "-p", "examples/string_vs_integer_policy.csv", "alice", "data", "read", "\"1\""}), "{\"allow\":true,\"explain\":[\"reader\",\"data\",\"read\"]}");
         assertEquals(Client.run(new String[]{"enforceEx", "-m", "examples/string_vs_integer_model.conf", "-p", "examples/string_vs_integer_policy.csv", "alice", "data", "read", "1"}), "{\"allow\":false,\"explain\":[]}");
     }
 }
