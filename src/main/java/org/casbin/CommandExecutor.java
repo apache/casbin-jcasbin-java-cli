@@ -34,7 +34,6 @@ public class CommandExecutor {
      */
     public static String convertToJson(String input) {
         input = input.trim();
-        // Handle the simple format {key: value}
         if (!input.contains("\"")) {
             input = input.substring(1, input.length() - 1).trim();
             StringBuilder jsonBuilder = new StringBuilder("{");
@@ -83,7 +82,9 @@ public class CommandExecutor {
                             convertedParams[i] = Integer.valueOf(inputVal[i]);
                         } else if(genericParameterTypes[i] == String.class) {
                             convertedParams[i] = inputVal[i];
-                        } else if(genericParameterTypes[i] == Object[].class || genericParameterTypes[i] == String[].class) {
+                        } else if(genericParameterTypes[i] == Object[].class) {
+                            convertedParams[i] = smartConvertValue(Arrays.copyOfRange(inputVal, i, inputVal.length));
+                        } else if(genericParameterTypes[i] == String[].class) {
                             convertedParams[i] = Arrays.copyOfRange(inputVal, i, inputVal.length);
                         } else if (genericParameterTypes[i] == String[][].class) {
                             String[] arr = Arrays.copyOfRange(inputVal, i, inputVal.length);
@@ -147,5 +148,38 @@ public class CommandExecutor {
         }
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(responseBody);
+    }
+
+    private Object smartConvertValue(Object value) {
+        if (value instanceof String[]) {
+            String[] values = (String[]) value;
+            Object[] convertedArray = new Object[values.length];
+            for (int i = 0; i < values.length; i++) {
+                convertedArray[i] = smartConvertValue(values[i]);
+            }
+            return convertedArray;
+        }
+        
+        String strValue = ((String) value).trim();
+    
+        if (strValue.startsWith("\"") && strValue.endsWith("\"")) {
+            return strValue.substring(1, strValue.length() - 1);
+        }
+    
+        if (strValue.matches("-?\\d+")) { 
+            return Integer.valueOf(strValue);
+        }
+    
+        if (strValue.matches("-?\\d*\\.\\d+")) { 
+            return Double.valueOf(strValue);  
+        }
+    
+        if ("true".equalsIgnoreCase(strValue)) {
+            return Boolean.TRUE;
+        } else if ("false".equalsIgnoreCase(strValue)) {
+            return Boolean.FALSE;
+        }
+    
+        return strValue; 
     }
 }
