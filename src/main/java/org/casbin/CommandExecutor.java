@@ -34,7 +34,6 @@ public class CommandExecutor {
      */
     public static String convertToJson(String input) {
         input = input.trim();
-        // Handle the simple format {key: value}
         if (!input.contains("\"")) {
             input = input.substring(1, input.length() - 1).trim();
             StringBuilder jsonBuilder = new StringBuilder("{");
@@ -164,11 +163,11 @@ public class CommandExecutor {
         String strValue = ((String) value).trim();
     
         if (strValue.startsWith("\"") && strValue.endsWith("\"")) {
-            return strValue.substring(1, strValue.length() - 1);  // 去掉引号
+            return strValue.substring(1, strValue.length() - 1);
         }
     
         if (strValue.matches("-?\\d+")) { 
-            return Integer.valueOf(strValue);  // Integer
+            return Integer.valueOf(strValue);
         }
     
         if (strValue.matches("-?\\d*\\.\\d+")) { 
