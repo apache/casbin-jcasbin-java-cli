@@ -84,12 +84,7 @@ public class CommandExecutor {
                         } else if(genericParameterTypes[i] == String.class) {
                             convertedParams[i] = inputVal[i];
                         } else if(genericParameterTypes[i] == Object[].class) {
-                            String[] remainingArgs = Arrays.copyOfRange(inputVal, i, inputVal.length);
-                            Object[] convertedArray = new Object[remainingArgs.length];
-                            for (int j = 0; j < remainingArgs.length; j++) {
-                                convertedArray[j] = smartConvertValue(remainingArgs[j]);
-                            }
-                            convertedParams[i] = convertedArray;
+                            convertedParams[i] = smartConvertValue(Arrays.copyOfRange(inputVal, i, inputVal.length));
                         } else if(genericParameterTypes[i] == String[].class) {
                             convertedParams[i] = Arrays.copyOfRange(inputVal, i, inputVal.length);
                         } else if (genericParameterTypes[i] == String[][].class) {
@@ -156,28 +151,37 @@ public class CommandExecutor {
         return mapper.writeValueAsString(responseBody);
     }
 
-    private Object smartConvertValue(String value) {
-        value = value.trim();
+    private Object smartConvertValue(Object value) {
+        if (value instanceof String[]) {
+            String[] values = (String[]) value;
+            Object[] convertedArray = new Object[values.length];
+            for (int i = 0; i < values.length; i++) {
+                convertedArray[i] = smartConvertValue(values[i]);
+            }
+            return convertedArray;
+        }
+        
+        String strValue = ((String) value).trim();
     
-        if (value.startsWith("\"") && value.endsWith("\"")) {
-            return value.substring(1, value.length() - 1);  // 去掉引号
+        if (strValue.startsWith("\"") && strValue.endsWith("\"")) {
+            return strValue.substring(1, strValue.length() - 1);  // 去掉引号
         }
     
-        if (value.matches("-?\\d+")) { 
-            return Integer.valueOf(value);  // Integer
+        if (strValue.matches("-?\\d+")) { 
+            return Integer.valueOf(strValue);  // Integer
         }
     
-        if (value.matches("-?\\d*\\.\\d+")) { 
-            return Double.valueOf(value);  
+        if (strValue.matches("-?\\d*\\.\\d+")) { 
+            return Double.valueOf(strValue);  
         }
     
-        if ("true".equalsIgnoreCase(value)) {
+        if ("true".equalsIgnoreCase(strValue)) {
             return Boolean.TRUE;
-        } else if ("false".equalsIgnoreCase(value)) {
+        } else if ("false".equalsIgnoreCase(strValue)) {
             return Boolean.FALSE;
         }
     
-        return value; 
+        return strValue; 
     }
     
 }

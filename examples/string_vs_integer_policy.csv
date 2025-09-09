@@ -1,7 +1,0 @@
-p, reader, data, read
-p, writer, data, write
-p, admin, data, delete
-g, alice, reader
-g, alice, writer
-g, bob, reader
-g, cathy, admin
