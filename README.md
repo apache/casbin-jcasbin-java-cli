@@ -1,8 +1,8 @@
 # casbin-java-cli
 
-[![build](https://github.com/jcasbin/casbin-java-cli/actions/workflows/maven-ci.yml/badge.svg)](https://github.com/jcasbin/casbin-java-cli/actions/workflows/maven-ci.yml)
-[![codecov](https://codecov.io/gh/jcasbin/casbin-java-cli/branch/master/graph/badge.svg?token=pKOEodQ3q9)](https://app.codecov.io/github/jcasbin/casbin-java-cli)
-[![Release](https://img.shields.io/github/release/jcasbin/casbin-java-cli.svg)](https://github.com/jcasbin/casbin-java-cli/releases/latest)
+[![build](https://github.com/apache/casbin-jcasbin-java-cli/actions/workflows/maven-ci.yml/badge.svg)](https://github.com/apache/casbin-jcasbin-java-cli/actions/workflows/maven-ci.yml)
+[![codecov](https://codecov.io/gh/apache/casbin-jcasbin-java-cli/branch/master/graph/badge.svg?token=pKOEodQ3q9)](https://app.codecov.io/github/apache/casbin-jcasbin-java-cli)
+[![Release](https://img.shields.io/github/release/apache/casbin-jcasbin-java-cli.svg)](https://github.com/apache/casbin-jcasbin-java-cli/releases/latest)
 [![Discord](https://img.shields.io/discord/1022748306096537660?logo=discord&label=discord&color=5865F2)](https://discord.gg/S5UjpzGZjN)
 
 casbin-java-cli is a command-line tool based on jcasbin, enabling you to use all of jcasbin's APIs in the shell.
@@ -12,7 +12,7 @@ casbin-java-cli is a command-line tool based on jcasbin, enabling you to use all
 1. Clone project from repository
 
 ``` shell
-git clone https://github.com/jcasbin/casbin-java-cli.git
+git clone https://github.com/apache/casbin-jcasbin-java-cli.git
 ```
 
 2. Build project, the jar package will be generated in the `target` directory
